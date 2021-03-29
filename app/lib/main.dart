@@ -1,5 +1,5 @@
+import 'package:app/service/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'service/post_service.dart';
 
 void main() {
   runApp(MyApp());
@@ -8,9 +8,11 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    PostService().getPosts().then((value) => print("value: $value"));
+    // Check API
+    // PostService().getPosts().then((value) => print("value: $value"));
+
     return MaterialApp(
-      home: Scaffold(),
+      home: HomeScreen(),
     );
   }
 }

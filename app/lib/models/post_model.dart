@@ -13,7 +13,7 @@ List<PostModel> postFromJson(String jsonData) {
 // respone ke json
 String postToJson(PostModel data) {
   final jsonData = data.toJson();
-  json.encode(jsonData);
+  return json.encode(jsonData);
 }
 
 class PostModel {

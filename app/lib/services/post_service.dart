@@ -10,6 +10,7 @@ class PostService {
     if (response.statusCode == 200) {
       return postFromJson(response.body);
     }
+
     return null;
   }
 }
