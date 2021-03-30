@@ -29,27 +29,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 _checkData(snapshot),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          var result = await Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => FormScreen()),
           );
+          if (result != null) {
+            setState(() {});
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text('Success')));
+          }
         },
         child: Icon(Icons.add),
       ),
     );
-  }
-
-  // Navigate and display selection
-  void _navigateAndDisplaySelection(BuildContext context) async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => FormScreen()),
-    );
-
-    ScaffoldMessenger.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text("$result")));
   }
 
   // Check data
@@ -84,17 +77,54 @@ class _HomeScreenState extends State<HomeScreen> {
               Text(post.title),
               Text(post.content),
               ElevatedButton(
-                  onPressed: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => FormScreen(
-                          postModel: post,
-                        ),
-                      ),
-                    );
-                  },
-                  child: Text('Edit'))
+                onPressed: () async {
+                  var result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FormScreen(postModel: post),
+                    ),
+                  );
+                  if (result != null) {
+                    setState(() {});
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text('Success')));
+                  }
+                },
+                child: Text('Edit'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text('Warning'),
+                          content: Text(
+                              "Are you sure want to delete data ${post.title}?"),
+                          actions: <Widget>[
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                postService
+                                    .deletePost(post.id)
+                                    .then((isSuccess) {
+                                  setState(() {});
+                                });
+                              },
+                              child: Text("Yes"),
+                            ),
+                            OutlinedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text("No"),
+                            )
+                          ],
+                        );
+                      });
+                },
+                child: Text('Delete'),
+              )
             ],
           ),
         );
@@ -102,4 +132,16 @@ class _HomeScreenState extends State<HomeScreen> {
       itemCount: posts.length,
     );
   }
+
+  // Navigate and display selection
+  // void _navigateAndDisplaySelection(BuildContext context) async {
+  //   final result = await Navigator.push(
+  //     context,
+  //     MaterialPageRoute(builder: (context) => FormScreen()),
+  //   );
+
+  //   ScaffoldMessenger.of(context)
+  //     ..removeCurrentSnackBar()
+  //     ..showSnackBar(SnackBar(content: Text("$result")));
+  // }
 }

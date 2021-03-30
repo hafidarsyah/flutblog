@@ -41,4 +41,17 @@ class PostService {
     if (response.statusCode == 200) return true;
     return false;
   }
+
+  // Delete post
+  Future<bool> deletePost(int? id) async {
+    final response = await http.delete(
+      Uri.parse(baseURL + '/${id.toString()}'),
+      headers: <String, String>{
+        "Content-Type": "application/json; charset=UTF-8"
+      },
+    );
+
+    if (response.statusCode == 200) return true;
+    return false;
+  }
 }

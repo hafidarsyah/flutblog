@@ -1,4 +1,3 @@
-import 'package:application/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:application/models/post_model.dart';
@@ -14,7 +13,7 @@ class FormScreen extends StatefulWidget {
 }
 
 class _FormScreenState extends State<FormScreen> {
-  // Declaration initState
+  // Declaration
   PostService _postService = PostService();
 
   bool _isLoading = false;
@@ -87,10 +86,7 @@ class _FormScreenState extends State<FormScreen> {
                       setState(() => _isLoading = false);
 
                       if (isSuccess) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
-                        );
+                        Navigator.pop(context, true);
                       }
                     });
                   } else {
@@ -101,10 +97,7 @@ class _FormScreenState extends State<FormScreen> {
                       setState(() => _isLoading = false);
 
                       if (isSuccess) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
-                        );
+                        Navigator.pop(context, true);
                       }
                     });
                   }
