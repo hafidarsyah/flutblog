@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:application/models/post_model.dart';
 import 'package:application/services/post_service.dart';
 
-import 'package:application/screens/add_post_screen.dart';
+import 'package:application/screens/form_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -30,7 +30,10 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _navigateAndDisplaySelection(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => FormScreen()),
+          );
         },
         child: Icon(Icons.add),
       ),
@@ -41,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _navigateAndDisplaySelection(BuildContext context) async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => AddPostScreen()),
+      MaterialPageRoute(builder: (context) => FormScreen()),
     );
 
     ScaffoldMessenger.of(context)
@@ -80,6 +83,18 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Text(post.title),
               Text(post.content),
+              ElevatedButton(
+                  onPressed: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FormScreen(
+                          postModel: post,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Text('Edit'))
             ],
           ),
         );
