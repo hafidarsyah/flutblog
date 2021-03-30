@@ -1,8 +1,9 @@
-import 'package:application/screens/add_post_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:application/models/post_model.dart';
 import 'package:application/services/post_service.dart';
+
+import 'package:application/screens/add_post_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -25,34 +26,44 @@ class _HomeScreenState extends State<HomeScreen> {
         future: postService.getPosts(),
         builder:
             (BuildContext context, AsyncSnapshot<List<PostModel>?> snapshot) =>
-                _getDataCheck(snapshot),
+                _checkData(snapshot),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AddPostScreen(),
-            ),
-          );
+          _navigateAndDisplaySelection(context);
         },
         child: Icon(Icons.add),
       ),
     );
   }
 
-  // Logic check data
-  dynamic _getDataCheck(snapshot) {
+  // Navigate and display selection
+  void _navigateAndDisplaySelection(BuildContext context) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AddPostScreen()),
+    );
+
+    ScaffoldMessenger.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text("$result")));
+  }
+
+  // Check data
+  dynamic _checkData(snapshot) {
     if (snapshot.hasData) {
+      // Success
       List<PostModel> posts = snapshot.data!;
 
       return _buildListView(posts);
     } else if (snapshot.hasError) {
+      // Error
       return Center(
         child: Text("Something wrong with message: ${snapshot.error}"),
       );
     }
 
+    // Loading
     return Center(
       child: CircularProgressIndicator(),
     );

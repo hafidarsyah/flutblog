@@ -19,17 +19,20 @@ class PostModel {
         "content": content,
       };
 
+  // Debug
   // @override
   // String toString() {
   //   return 'PostModel{id: $id, title: $title, content: $content, created_at: $createdAt, updated_at: $updatedAt}';
   // }
 }
 
+// Decode
 List<PostModel> postFromJson(String jsonData) {
   final result = json.decode(jsonData);
   return List<PostModel>.from(result.map((item) => PostModel.fromJson(item)));
 }
 
+// Encode
 String postToJson(PostModel postModel) {
   final results = postModel.toJson();
   return json.encode(results);

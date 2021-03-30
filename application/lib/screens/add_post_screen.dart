@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
+
 import 'package:application/models/post_model.dart';
 import 'package:application/services/post_service.dart';
-import 'package:flutter/material.dart';
 
 class AddPostScreen extends StatefulWidget {
   @override
@@ -14,7 +15,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
   // Process and validation
   bool _isLoading = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
 
   // TextController
   TextEditingController _controllerTitle = TextEditingController();
@@ -23,7 +23,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldState,
       appBar: AppBar(
         title: Text("Form Add Post"),
       ),
@@ -33,6 +32,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
           children: [
             TextFormField(
               controller: _controllerTitle,
+              // Validator
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Required';
@@ -43,6 +43,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
             ),
             TextFormField(
               controller: _controllerContent,
+              // Validator
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Required';
@@ -53,7 +54,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
             ),
             ElevatedButton(
               onPressed: () {
+                // Check validate
                 if (_formKey.currentState!.validate()) {
+                  // Config loading, controllerText, post model and create post
                   setState(() => _isLoading = true);
 
                   String _title = _controllerTitle.text.toString();
@@ -65,14 +68,16 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   );
 
                   _postService.createPost(postModel).then((isSuccess) {
+                    // Success insert data
                     setState(() => _isLoading = false);
 
                     if (isSuccess) {
-                      Navigator.pop(context);
+                      Navigator.pop(context, 'Success');
                     }
                   });
                 }
               },
+              // Loading and text
               child: _isLoading ? CircularProgressIndicator() : Text("Submit"),
             )
           ],

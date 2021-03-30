@@ -3,8 +3,10 @@ import 'package:http/http.dart' as http;
 import '../models/post_model.dart';
 
 class PostService {
+  // Base URL API
   final Uri baseURL = Uri.parse('http://127.0.0.1:8000/api/posts');
 
+  // Get posts
   Future<List<PostModel>?> getPosts() async {
     final response = await http.get(baseURL);
 
@@ -12,6 +14,7 @@ class PostService {
     return null;
   }
 
+  // Create post
   Future<bool> createPost(PostModel postModel) async {
     final response = await http.post(
       baseURL,
