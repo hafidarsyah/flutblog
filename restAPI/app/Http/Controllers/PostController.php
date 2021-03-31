@@ -7,10 +7,16 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    // get all post
+    // get all posts
     public function index()
     {
         return Post::all();
+    }
+
+    // get post
+    public function get($id)
+    {
+        return Post::where('post', $id)->get();
     }
 
     // create post
@@ -18,13 +24,13 @@ class PostController extends Controller
     {
         request()->validate([
             'title' => 'required',
-            'content' => 'required'
+            'description' => 'required'
         ]);
 
 
         return Post::create([
             'title' => request('title'),
-            'content' => request('content')
+            'description' => request('description')
         ]);
     }
 
@@ -33,27 +39,19 @@ class PostController extends Controller
     {
         request()->validate([
             'title' => 'required',
-            'content' => 'required'
+            'description' => 'required'
         ]);
 
 
-        $success = $post->update([
+        $post->update([
             'title' => request('title'),
-            'content' => request('content')
+            'description' => request('description')
         ]);
-
-        return [
-            'success' => $success
-        ];
     }
 
     // delete post
     public function destroy(Post $post)
     {
-        $success = $post->delete();
-
-        return [
-            'success' => $success
-        ];
+        $post->delete();
     }
 }
