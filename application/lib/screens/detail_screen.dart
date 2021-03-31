@@ -30,7 +30,7 @@ class _DetailScreenState extends State<DetailScreen> {
         alignment: Alignment.topCenter,
         child: SingleChildScrollView(
           child: Container(
-            width: size.width * 0.8,
+            width: size.width * 0.9,
             padding: EdgeInsets.all(16.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
@@ -43,6 +43,18 @@ class _DetailScreenState extends State<DetailScreen> {
                   widget.postModel!.title,
                   style:
                       primaryText.copyWith(fontSize: 24, color: primaryColor),
+                ),
+                SizedBox(
+                  height: size.height * 0.01,
+                ),
+                Text(
+                  'Created at ' +
+                      widget.postModel!.createAt!.day.toString() +
+                      " - " +
+                      widget.postModel!.createAt!.month.toString() +
+                      " - " +
+                      widget.postModel!.createAt!.year.toString(),
+                  style: TextStyle(color: Colors.grey),
                 ),
                 SizedBox(
                   height: size.height * 0.02,

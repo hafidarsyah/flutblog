@@ -145,117 +145,130 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: Colors.grey[800],
                             height: 1.4,
                           ),
-                          maxLines: 7,
+                          maxLines: 4,
                         ),
                       ],
                     ),
-                    Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                      ElevatedButton(
-                        onPressed: () async {
-                          var result = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => FormScreen(postModel: post),
-                            ),
-                          );
-                          if (result != null) {
-                            setState(() {});
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Update Post Success')),
-                            );
-                          }
-                        },
-                        child: Text(
-                          'Update',
-                          style: TextStyle(
-                            color: Colors.yellow[800],
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Created at ' +
+                                post.createAt!.day.toString() +
+                                " - " +
+                                post.createAt!.month.toString() +
+                                " - " +
+                                post.createAt!.year.toString(),
+                            style: TextStyle(color: Colors.grey),
                           ),
-                        ),
-                        style: ButtonStyle(
-                          elevation: MaterialStateProperty.all(0),
-                          backgroundColor: MaterialStateProperty.all(
-                            Colors.yellow[100],
-                          ),
-                          tapTargetSize: MaterialTapTargetSize.padded,
-                        ),
-                      ),
-                      SizedBox(
-                        width: size.width * 0.007,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Text(
-                                    'Warning',
-                                    style: primaryText.copyWith(
-                                      color: Colors.red[800],
-                                    ),
+                          Row(children: [
+                            ElevatedButton(
+                              onPressed: () async {
+                                var result = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        FormScreen(postModel: post),
                                   ),
-                                  content: Text(
-                                    "Are you sure want to delete data ${post.title}?",
-                                    style: primaryText.copyWith(
-                                        color: primaryColor),
-                                  ),
-                                  actions: <Widget>[
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        postService
-                                            .deletePost(post.id)
-                                            .then((isSuccess) {
-                                          setState(() {});
-                                        });
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                              content:
-                                                  Text('Delete Post Success')),
-                                        );
-                                      },
-                                      child: Text(
-                                        "Yes",
-                                        style:
-                                            TextStyle(color: Colors.blue[800]),
-                                      ),
-                                      style: ButtonStyle(
-                                        elevation: MaterialStateProperty.all(0),
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                          Colors.blue[100],
-                                        ),
-                                        tapTargetSize:
-                                            MaterialTapTargetSize.padded,
-                                      ),
-                                    ),
-                                    OutlinedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text(
-                                        "No",
-                                        style:
-                                            TextStyle(color: Colors.grey[800]),
-                                      ),
-                                    )
-                                  ],
                                 );
-                              });
-                        },
-                        child: Text(
-                          'Delete',
-                          style: TextStyle(color: Colors.red[800]),
-                        ),
-                        style: ButtonStyle(
-                          elevation: MaterialStateProperty.all(0),
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.red[100]),
-                          tapTargetSize: MaterialTapTargetSize.padded,
-                        ),
-                      )
-                    ]),
+                                if (result != null) {
+                                  setState(() {});
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text('Update Post Success')),
+                                  );
+                                }
+                              },
+                              child: Icon(
+                                Icons.edit,
+                                color: Colors.yellow[800],
+                              ),
+                              style: ButtonStyle(
+                                elevation: MaterialStateProperty.all(0),
+                                backgroundColor: MaterialStateProperty.all(
+                                  Colors.yellow[100],
+                                ),
+                                tapTargetSize: MaterialTapTargetSize.padded,
+                              ),
+                            ),
+                            SizedBox(
+                              width: size.width * 0.007,
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: Text(
+                                          'Warning',
+                                          style: primaryText.copyWith(
+                                            color: Colors.red[800],
+                                          ),
+                                        ),
+                                        content: Text(
+                                          "Are you sure want to delete data ${post.title}?",
+                                          style: primaryText.copyWith(
+                                            color: primaryColor,
+                                          ),
+                                        ),
+                                        actions: <Widget>[
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              postService
+                                                  .deletePost(post.id)
+                                                  .then((isSuccess) {
+                                                setState(() {});
+                                              });
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                      'Delete Post Success'),
+                                                ),
+                                              );
+                                            },
+                                            child: Text(
+                                              "Yes",
+                                              style: TextStyle(
+                                                  color: Colors.blue[800]),
+                                            ),
+                                            style: ButtonStyle(
+                                              elevation:
+                                                  MaterialStateProperty.all(0),
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                Colors.blue[100],
+                                              ),
+                                              tapTargetSize:
+                                                  MaterialTapTargetSize.padded,
+                                            ),
+                                          ),
+                                          OutlinedButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text(
+                                              "No",
+                                              style: TextStyle(
+                                                  color: Colors.grey[800]),
+                                            ),
+                                          )
+                                        ],
+                                      );
+                                    });
+                              },
+                              child: Icon(Icons.delete, color: Colors.red[800]),
+                              style: ButtonStyle(
+                                elevation: MaterialStateProperty.all(0),
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.red[100]),
+                                tapTargetSize: MaterialTapTargetSize.padded,
+                              ),
+                            )
+                          ]),
+                        ]),
                   ],
                 ),
               ),
