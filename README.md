@@ -12,7 +12,7 @@
 
 ### 🤔 Apa itu APILF?
 
-APILF adalah aplikasi blog, yang dibuat oleh <a href="https://github.com/hafidardiansyah"> Hafid Ardiansyah</a>. Menggunakan teknologi Flutter dan Laravel.
+APILF adalah aplikasi blog sederhana, yang dibuat oleh <a href="https://github.com/hafidardiansyah"> Hafid Ardiansyah</a>. Menggunakan teknologi Flutter dan Laravel.
 
 ### 🎉 Kenapa membuat APILF?
 
