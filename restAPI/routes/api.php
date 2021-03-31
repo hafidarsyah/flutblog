@@ -24,9 +24,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // get all posts
 Route::get('/posts', [PostController::class, 'index']);
 
-// get post
-Route::get('/post/{id}', [PostController::class, 'get']);
-
 // create post
 Route::post('/posts', [PostController::class, 'store']);
 

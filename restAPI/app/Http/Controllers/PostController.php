@@ -13,12 +13,6 @@ class PostController extends Controller
         return Post::all();
     }
 
-    // get post
-    public function get($id)
-    {
-        return Post::where('post', $id)->get();
-    }
-
     // create post
     public function store()
     {
