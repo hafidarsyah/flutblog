@@ -5,6 +5,8 @@ import 'package:application/models/post_model.dart';
 import 'package:application/services/post_service.dart';
 import 'package:application/screens/form_screen.dart';
 
+import 'detail_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -28,6 +30,23 @@ class _HomeScreenState extends State<HomeScreen> {
           style: primaryText.copyWith(color: secondaryColor),
         ),
         backgroundColor: primaryColor,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add, color: secondaryColor),
+            onPressed: () async {
+              var result = await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => FormScreen()),
+              );
+              if (result != null) {
+                setState(() {});
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Create Post Success')),
+                );
+              }
+            },
+          )
+        ],
       ),
       body: LayoutBuilder(builder: (context, constraints) {
         if (constraints.maxWidth >= 1100) {
@@ -52,22 +71,6 @@ class _HomeScreenState extends State<HomeScreen> {
               _checkData(snapshot, 1),
         );
       }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          var result = await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => FormScreen()),
-          );
-          if (result != null) {
-            setState(() {});
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Create Post Success')),
-            );
-          }
-        },
-        child: Icon(Icons.add, color: secondaryColor),
-        backgroundColor: primaryColor,
-      ),
     );
   }
 
@@ -77,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // Success
       List<PostModel> posts = snapshot.data!;
 
-      return _buildListView(posts, count);
+      return _buildView(posts, count);
     } else if (snapshot.hasError) {
       // Error
       return Center(
@@ -91,8 +94,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Widget list view
-  Widget _buildListView(List<PostModel> posts, int count) {
+  // Widget view
+  Widget _buildView(List<PostModel> posts, int count) {
     Size size = MediaQuery.of(context).size;
 
     return GridView.count(
@@ -105,143 +108,156 @@ class _HomeScreenState extends State<HomeScreen> {
 
           return Card(
             margin: EdgeInsets.all(8.0),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        post.title,
-                        style: primaryText.copyWith(
-                          fontSize: 18,
-                          color: primaryColor,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailScreen(postModel: post),
+                  ),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          post.title,
+                          style: primaryText.copyWith(
+                            fontSize: 18,
+                            color: primaryColor,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
                         ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
+                        SizedBox(
+                          height: size.height * 0.01,
+                        ),
+                        Text(
+                          post.description,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Colors.grey[800],
+                            height: 1.4,
+                          ),
+                          maxLines: 7,
+                        ),
+                      ],
+                    ),
+                    Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                      ElevatedButton(
+                        onPressed: () async {
+                          var result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => FormScreen(postModel: post),
+                            ),
+                          );
+                          if (result != null) {
+                            setState(() {});
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Update Post Success')),
+                            );
+                          }
+                        },
+                        child: Text(
+                          'Update',
+                          style: TextStyle(
+                            color: Colors.yellow[800],
+                          ),
+                        ),
+                        style: ButtonStyle(
+                          elevation: MaterialStateProperty.all(0),
+                          backgroundColor: MaterialStateProperty.all(
+                            Colors.yellow[100],
+                          ),
+                          tapTargetSize: MaterialTapTargetSize.padded,
+                        ),
                       ),
                       SizedBox(
-                        height: size.height * 0.01,
+                        width: size.width * 0.007,
                       ),
-                      Text(
-                        post.description,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: Colors.grey[800],
-                        ),
-                        maxLines: 5,
-                      ),
-                    ],
-                  ),
-                  Row(children: [
-                    ElevatedButton(
-                      onPressed: () async {
-                        var result = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => FormScreen(postModel: post),
-                          ),
-                        );
-                        if (result != null) {
-                          setState(() {});
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Update Post Success')),
-                          );
-                        }
-                      },
-                      child: Text(
-                        'Update',
-                        style: TextStyle(
-                          color: Colors.yellow[800],
-                        ),
-                      ),
-                      style: ButtonStyle(
-                        elevation: MaterialStateProperty.all(0),
-                        backgroundColor: MaterialStateProperty.all(
-                          Colors.yellow[100],
-                        ),
-                        tapTargetSize: MaterialTapTargetSize.padded,
-                      ),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.007,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: Text(
-                                  'Warning',
-                                  style: primaryText.copyWith(
-                                    color: Colors.red[800],
-                                  ),
-                                ),
-                                content: Text(
-                                  "Are you sure want to delete data ${post.title}?",
-                                  style:
-                                      primaryText.copyWith(color: primaryColor),
-                                ),
-                                actions: <Widget>[
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                      postService
-                                          .deletePost(post.id)
-                                          .then((isSuccess) {
-                                        setState(() {});
-                                      });
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                            content:
-                                                Text('Delete Post Success')),
-                                      );
-                                    },
-                                    child: Text(
-                                      "Yes",
-                                      style: TextStyle(color: Colors.blue[800]),
+                      ElevatedButton(
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text(
+                                    'Warning',
+                                    style: primaryText.copyWith(
+                                      color: Colors.red[800],
                                     ),
-                                    style: ButtonStyle(
-                                      elevation: MaterialStateProperty.all(0),
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                        Colors.blue[100],
+                                  ),
+                                  content: Text(
+                                    "Are you sure want to delete data ${post.title}?",
+                                    style: primaryText.copyWith(
+                                        color: primaryColor),
+                                  ),
+                                  actions: <Widget>[
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        postService
+                                            .deletePost(post.id)
+                                            .then((isSuccess) {
+                                          setState(() {});
+                                        });
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                              content:
+                                                  Text('Delete Post Success')),
+                                        );
+                                      },
+                                      child: Text(
+                                        "Yes",
+                                        style:
+                                            TextStyle(color: Colors.blue[800]),
                                       ),
-                                      tapTargetSize:
-                                          MaterialTapTargetSize.padded,
+                                      style: ButtonStyle(
+                                        elevation: MaterialStateProperty.all(0),
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                          Colors.blue[100],
+                                        ),
+                                        tapTargetSize:
+                                            MaterialTapTargetSize.padded,
+                                      ),
                                     ),
-                                  ),
-                                  OutlinedButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text(
-                                      "No",
-                                      style: TextStyle(color: Colors.grey[800]),
-                                    ),
-                                  )
-                                ],
-                              );
-                            });
-                      },
-                      child: Text(
-                        'Delete',
-                        style: TextStyle(color: Colors.red[800]),
-                      ),
-                      style: ButtonStyle(
-                        elevation: MaterialStateProperty.all(0),
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.red[100]),
-                        tapTargetSize: MaterialTapTargetSize.padded,
-                      ),
-                    )
-                  ]),
-                ],
+                                    OutlinedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        "No",
+                                        style:
+                                            TextStyle(color: Colors.grey[800]),
+                                      ),
+                                    )
+                                  ],
+                                );
+                              });
+                        },
+                        child: Text(
+                          'Delete',
+                          style: TextStyle(color: Colors.red[800]),
+                        ),
+                        style: ButtonStyle(
+                          elevation: MaterialStateProperty.all(0),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.red[100]),
+                          tapTargetSize: MaterialTapTargetSize.padded,
+                        ),
+                      )
+                    ]),
+                  ],
+                ),
               ),
             ),
           );

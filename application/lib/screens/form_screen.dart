@@ -45,7 +45,7 @@ class _FormScreenState extends State<FormScreen> {
         backgroundColor: primaryColor,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(12.0),
         child: Form(
           key: _formKey,
           child: Column(
@@ -88,7 +88,7 @@ class _FormScreenState extends State<FormScreen> {
                   return null;
                 },
                 cursorColor: primaryColor,
-                maxLines: 8,
+                maxLines: 18,
                 decoration: InputDecoration(
                   labelText: 'Description',
                   labelStyle: TextStyle(color: primaryColor),
