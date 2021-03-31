@@ -160,6 +160,9 @@ class _FormScreenState extends State<FormScreen> {
                     elevation: MaterialStateProperty.all(0),
                     backgroundColor: MaterialStateProperty.all(primaryColor),
                     tapTargetSize: MaterialTapTargetSize.padded,
+                    padding: MaterialStateProperty.all(
+                      EdgeInsets.symmetric(vertical: 18, horizontal: 28),
+                    ),
                   ),
                 )
               ],
