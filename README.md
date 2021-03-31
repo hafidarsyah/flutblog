@@ -16,7 +16,7 @@ APILF adalah aplikasi blog sederhana, yang dibuat oleh <a href="https://github.c
 
 ### 🎉 Kenapa membuat APILF?
 
-Karena untuk melatih saya membuat API di Laravel dan memgimplementasikan API di Flutter.
+Karena untuk melatih saya membuat API di Laravel dan mengimplementasikan API di Flutter.
 
 ### 📝 Lisensi
 
