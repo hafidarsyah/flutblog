@@ -21,7 +21,6 @@ class PostController extends Controller
             'description' => 'required'
         ]);
 
-
         return Post::create([
             'title' => request('title'),
             'description' => request('description')
@@ -35,7 +34,6 @@ class PostController extends Controller
             'title' => 'required',
             'description' => 'required'
         ]);
-
 
         $post->update([
             'title' => request('title'),

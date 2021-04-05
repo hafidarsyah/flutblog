@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
 
 use Illuminate\Http\Request;
@@ -16,19 +17,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Public routes
+
+
+Route::post('/register', [AuthController::class, 'register']);
+
+// Get app post
+Route::get('/posts', [PostController::class, 'index']);
+
+// Protected routes
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    // Create Update Delete action post
+    Route::post('/posts', [PostController::class, 'store']);
+    Route::put('/posts/{post}', [PostController::class, 'update']);
+    Route::delete('/posts/{post}', [PostController::class, 'destroy']);
+});
+
 // Default
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-// get all posts
-Route::get('/posts', [PostController::class, 'index']);
-
-// create post
-Route::post('/posts', [PostController::class, 'store']);
-
-// update post
-Route::put('/posts/{post}', [PostController::class, 'update']);
-
-// delete post
-Route::delete('/posts/{post}', [PostController::class, 'destroy']);
