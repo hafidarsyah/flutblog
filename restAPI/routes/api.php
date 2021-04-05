@@ -19,8 +19,9 @@ use Illuminate\Support\Facades\Route;
 
 // Public routes
 
-
+// Auth
 Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
 // Get app post
 Route::get('/posts', [PostController::class, 'index']);
@@ -31,6 +32,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/posts', [PostController::class, 'store']);
     Route::put('/posts/{post}', [PostController::class, 'update']);
     Route::delete('/posts/{post}', [PostController::class, 'destroy']);
+    // Logout
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
 
 // Default
