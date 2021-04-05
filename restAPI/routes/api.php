@@ -25,6 +25,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 // Get app post
 Route::get('/posts', [PostController::class, 'index']);
+Route::get('/posts/{title}', [PostController::class, 'search']);
 
 // Protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {

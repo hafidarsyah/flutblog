@@ -13,6 +13,11 @@ class PostController extends Controller
         return Post::all();
     }
 
+    public function search($title)
+    {
+        return Post::where('title', 'like', '%' . $title . '%')->get();
+    }
+
     // create post
     public function store()
     {
