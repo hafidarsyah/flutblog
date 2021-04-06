@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:application/utils/contants.dart';
-import 'package:application/screens/auth_screen.dart';
 import 'package:application/screens/home_screen.dart';
 
 void main() {
@@ -17,6 +16,6 @@ class MyApp extends StatelessWidget {
           accentColor: primaryColor,
         ),
         debugShowCheckedModeBanner: false,
-        home: AuthScreen());
+        home: HomeScreen());
   }
 }

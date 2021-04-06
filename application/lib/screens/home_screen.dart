@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:application/utils/contants.dart';
 import 'package:application/models/post_model.dart';
 import 'package:application/services/post_service.dart';
 import 'package:application/screens/form_screen.dart';
+import 'package:application/screens/auth_screen.dart';
 
 import 'detail_screen.dart';
 
@@ -14,17 +16,39 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late PostService postService;
+  late SharedPreferences sharedPreferences;
 
   @override
   void initState() {
     super.initState();
     postService = PostService();
+    loginStatus();
+  }
+
+  loginStatus() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    if (sharedPreferences.getString("token") == null) {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => AuthScreen()),
+          (Route<dynamic> route) => false);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              sharedPreferences.clear();
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => AuthScreen()),
+                  (Route<dynamic> route) => false);
+            },
+            icon: Icon(
+              Icons.logout,
+            )),
         title: Text(
           'FlutBlog',
           style: primaryText.copyWith(color: secondaryColor),
@@ -278,16 +302,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-  // Navigate and display selection
-  // void _navigateAndDisplaySelection(BuildContext context) async {
-  //   final result = await Navigator.push(
-  //     context,
-  //     MaterialPageRoute(builder: (context) => FormScreen()),
-  //   );
-
-  //   ScaffoldMessenger.of(context)
-  //     ..removeCurrentSnackBar()
-  //     ..showSnackBar(SnackBar(content: Text("$result")));
-  // }
 }

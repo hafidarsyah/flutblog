@@ -61,11 +61,12 @@ class _FormScreenState extends State<FormScreen> {
 
                     return null;
                   },
+                  autofocus: true,
                   cursorColor: primaryColor,
                   decoration: InputDecoration(
                     labelText: 'Title',
                     labelStyle: TextStyle(color: primaryColor),
-                    hintText: 'Write post title',
+                    hintText: 'Enter post title',
                     hintStyle: TextStyle(color: Colors.grey),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey),
@@ -91,7 +92,7 @@ class _FormScreenState extends State<FormScreen> {
                   decoration: InputDecoration(
                     labelText: 'Description',
                     labelStyle: TextStyle(color: primaryColor),
-                    hintText: 'Write post description',
+                    hintText: 'Enter post description',
                     hintStyle: TextStyle(color: Colors.grey),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey),
@@ -127,6 +128,10 @@ class _FormScreenState extends State<FormScreen> {
 
                           if (isSuccess) {
                             Navigator.pop(context, true);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Create Post Failed')),
+                            );
                           }
                         });
                       } else {
@@ -138,6 +143,10 @@ class _FormScreenState extends State<FormScreen> {
 
                           if (isSuccess) {
                             Navigator.pop(context, true);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Create Post Failed')),
+                            );
                           }
                         });
                       }

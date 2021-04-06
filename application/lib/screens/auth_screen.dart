@@ -50,10 +50,11 @@ class _AuthScreenState extends State<AuthScreen> {
 
                         return null;
                       },
+                      autofocus: true,
                       decoration: InputDecoration(
                         labelText: 'Name',
                         labelStyle: TextStyle(color: primaryColor),
-                        hintText: 'Write name',
+                        hintText: 'Enter name',
                         hintStyle: TextStyle(color: Colors.grey),
                         border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey),
@@ -74,10 +75,11 @@ class _AuthScreenState extends State<AuthScreen> {
 
                       return null;
                     },
+                    autofocus: true,
                     decoration: InputDecoration(
                       labelText: 'Email',
                       labelStyle: TextStyle(color: primaryColor),
-                      hintText: 'Write email',
+                      hintText: 'Enter email',
                       hintStyle: TextStyle(color: Colors.grey),
                       border: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey),
@@ -90,7 +92,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   SizedBox(height: size.height * 0.02),
                   TextFormField(
                     controller: _passwordController,
-                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Required password';
@@ -101,7 +103,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     decoration: InputDecoration(
                       labelText: 'Password',
                       labelStyle: TextStyle(color: primaryColor),
-                      hintText: 'Write password',
+                      hintText: 'Enter password',
                       hintStyle: TextStyle(color: Colors.grey),
                       border: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey),
@@ -115,7 +117,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   if (_isSubmit)
                     TextFormField(
                       controller: _passwordConfirmationController,
-                      keyboardType: TextInputType.visiblePassword,
+                      obscureText: true,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Required password confirmation';
@@ -126,7 +128,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       decoration: InputDecoration(
                         labelText: 'Password Confirmation',
                         labelStyle: TextStyle(color: primaryColor),
-                        hintText: 'Write password confirmation',
+                        hintText: 'Enter password confirmation',
                         hintStyle: TextStyle(color: Colors.grey),
                         border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey),
@@ -152,8 +154,23 @@ class _AuthScreenState extends State<AuthScreen> {
                           );
 
                           _authService.register(_authModel).then((isSuccess) {
-                            _isSubmit = false;
                             setState(() => _isLoading = false);
+
+                            if (isSuccess) {
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HomeScreen()),
+                                  (Route<dynamic> route) => false);
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Register Success')),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Register Failed')),
+                              );
+                            }
                           });
                         } else {
                           AuthModel _authModel = AuthModel(
@@ -163,10 +180,22 @@ class _AuthScreenState extends State<AuthScreen> {
 
                           _authService.login(_authModel).then((isSuccess) {
                             setState(() => _isLoading = false);
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HomeScreen()));
+
+                            if (isSuccess) {
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HomeScreen()),
+                                  (Route<dynamic> route) => false);
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Login Success')),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Login Failed')),
+                              );
+                            }
                           });
                         }
                       }
@@ -192,11 +221,25 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   SizedBox(height: size.height * 0.02),
                   TextButton(
-                      onPressed: () {
-                        _isSubmit = _isSubmit == true ? false : true;
-                        setState(() {});
-                      },
-                      child: Text(_isSubmit == true ? 'Login' : 'Register'))
+                    onPressed: () {
+                      _isSubmit = _isSubmit == true ? false : true;
+                      setState(() {});
+                    },
+                    child: Text(
+                      _isSubmit == true ? 'Login' : 'Register',
+                      style: TextStyle(color: primaryColor),
+                    ),
+                    style: ButtonStyle(
+                      elevation: MaterialStateProperty.all(0),
+                      tapTargetSize: MaterialTapTargetSize.padded,
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.transparent),
+                      overlayColor: MaterialStateProperty.all(secondaryColor),
+                      padding: MaterialStateProperty.all(
+                        EdgeInsets.symmetric(vertical: 18, horizontal: 28),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

@@ -1,10 +1,12 @@
 import 'package:http/http.dart' as client;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/post_model.dart';
 
 class PostService {
   // Base URL API
   final String baseURL = 'http://127.0.0.1:8000';
+  late SharedPreferences sharedPreferences;
 
   // Get all posts
   Future<List<PostModel>?> getPosts() async {
@@ -16,11 +18,14 @@ class PostService {
 
   // Create post
   Future<bool> createPost(PostModel postModel) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final String? token = sharedPreferences.getString("token");
+
     final response = await client.post(
       Uri.parse(baseURL + '/api/posts'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        // 'Authorization': 'Bearer '
+        'Authorization': 'Bearer $token',
       },
       body: postToJson(postModel),
     );
@@ -31,9 +36,15 @@ class PostService {
 
   // Update post
   Future<bool> updatePost(PostModel postModel) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final String? token = sharedPreferences.getString("token");
+
     final response = await client.put(
       Uri.parse(baseURL + '/api/posts/${postModel.id.toString()}'),
-      headers: <String, String>{"Content-Type": "application/json"},
+      headers: <String, String>{
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $token',
+      },
       body: postToJson(postModel),
     );
 
@@ -43,9 +54,15 @@ class PostService {
 
   // Delete post
   Future<bool> deletePost(int? id) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final String? token = sharedPreferences.getString("token");
+
     final response = await client.delete(
       Uri.parse(baseURL + '/api/posts/${id.toString()}'),
-      headers: <String, String>{"Content-Type": "application/json"},
+      headers: <String, String>{
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $token',
+      },
     );
 
     if (response.statusCode == 200) return true;
