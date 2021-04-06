@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:application/utils/contants.dart';
 import 'package:application/models/post_model.dart';
@@ -106,20 +107,21 @@ class _FormScreenState extends State<FormScreen> {
                   height: size.height * 0.02,
                 ),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     // Check validate
                     if (_formKey.currentState!.validate()) {
                       // Declartion loading, controller, & model
                       setState(() => _isLoading = true);
 
-                      String _title = _controllerTitle.text.toString();
-                      String _description =
-                          _controllerDescription.text.toString();
+                      SharedPreferences sharedPreferences =
+                          await SharedPreferences.getInstance();
 
-                      PostModel _postModel = PostModel(
-                        title: _title,
-                        description: _description,
+                      PostModel postModel = PostModel(
+                        userId: (sharedPreferences.getInt("userId"))!,
+                        title: _controllerTitle.text.toString(),
+                        description: _controllerDescription.text.toString(),
                       );
+                      PostModel _postModel = postModel;
 
                       if (widget.postModel == null) {
                         // Create post
@@ -133,6 +135,8 @@ class _FormScreenState extends State<FormScreen> {
                               SnackBar(content: Text('Create Post Failed')),
                             );
                           }
+                        }).onError((error, stackTrace) {
+                          print(error);
                         });
                       } else {
                         // Update post
@@ -145,9 +149,11 @@ class _FormScreenState extends State<FormScreen> {
                             Navigator.pop(context, true);
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Create Post Failed')),
+                              SnackBar(content: Text('Update Post Failed')),
                             );
                           }
+                        }).onError((error, stackTrace) {
+                          print(error);
                         });
                       }
                     }

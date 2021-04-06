@@ -15,15 +15,21 @@ String postToJson(PostModel postModel) {
 
 class PostModel {
   int? id;
+  int userId;
   String title;
   String description;
   DateTime? createAt;
 
   PostModel(
-      {this.id, required this.title, required this.description, this.createAt});
+      {this.id,
+      required this.userId,
+      required this.title,
+      required this.description,
+      this.createAt});
 
   factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
         id: json["id"],
+        userId: json["user_id"],
         title: json["title"],
         description: json["description"],
         createAt: DateTime.parse(json["created_at"]),
@@ -31,9 +37,9 @@ class PostModel {
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "user_id": userId,
         "title": title,
         "description": description,
-        "createAt": createAt?.toIso8601String(),
       };
 
   // Debug

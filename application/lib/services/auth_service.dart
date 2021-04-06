@@ -19,7 +19,7 @@ class AuthService {
     if (response.statusCode == 201) {
       final dynamic jsonResponse = json.decode(response.body);
 
-      sharedPreferences.setInt('id', jsonResponse['user']['id']);
+      sharedPreferences.setInt('userId', jsonResponse['user']['id']);
       sharedPreferences.setString('token', jsonResponse['token']);
 
       return true;
@@ -40,7 +40,7 @@ class AuthService {
     if (response.statusCode == 201) {
       final dynamic jsonResponse = json.decode(response.body);
 
-      sharedPreferences.setInt('id', jsonResponse['user']['id']);
+      sharedPreferences.setInt('userId', jsonResponse['user']['id']);
       sharedPreferences.setString('token', jsonResponse['token']);
 
       return true;
