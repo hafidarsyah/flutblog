@@ -75,9 +75,7 @@ class _FormScreenState extends State<FormScreen> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: size.height * 0.02,
-                ),
+                SizedBox(height: size.height * 0.02),
                 TextFormField(
                   controller: _controllerDescription,
                   // Validator
