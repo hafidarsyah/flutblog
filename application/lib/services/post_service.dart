@@ -16,10 +16,19 @@ class PostService {
     return null;
   }
 
-  // Get all posts
+  // Get post
   Future<List<PostModel>?> getPost(int? id) async {
     final response =
         await client.get(Uri.parse(baseURL + '/api/post/' + id.toString()));
+
+    if (response.statusCode == 200) return postFromJson(response.body);
+    return null;
+  }
+
+  // Get my posts
+  Future<List<PostModel>?> getMyPost(int? id) async {
+    final response =
+        await client.get(Uri.parse(baseURL + '/api/my_post/' + id.toString()));
 
     if (response.statusCode == 200) return postFromJson(response.body);
     return null;
@@ -76,12 +85,5 @@ class PostService {
 
     if (response.statusCode == 200) return true;
     return false;
-  }
-
-  Future<bool> getUserId(int? userId) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    final int? _userId = sharedPreferences.getInt("userId");
-
-    return _userId == userId ? true : false;
   }
 }

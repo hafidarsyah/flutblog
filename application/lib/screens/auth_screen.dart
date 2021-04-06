@@ -171,6 +171,8 @@ class _AuthScreenState extends State<AuthScreen> {
                                 SnackBar(content: Text('Register Failed')),
                               );
                             }
+                          }).onError((error, stackTrace) {
+                            print(error);
                           });
                         } else {
                           AuthModel _authModel = AuthModel(
@@ -196,6 +198,8 @@ class _AuthScreenState extends State<AuthScreen> {
                                 SnackBar(content: Text('Login Failed')),
                               );
                             }
+                          }).onError((error, stackTrace) {
+                            print(error);
                           });
                         }
                       }

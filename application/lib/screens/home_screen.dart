@@ -17,7 +17,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late PostService _postService;
   late SharedPreferences _sharedPreferences;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   late final int? _userId;
+  late dynamic _getAction = _postService.getPosts();
 
   @override
   void initState() {
@@ -40,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
@@ -52,12 +56,27 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(
               Icons.logout,
             )),
-        title: Text(
-          'FlutBlog',
-          style: primaryText.copyWith(color: secondaryColor),
+        title: InkWell(
+          onTap: () async {
+            setState(() {
+              _getAction = _postService.getPosts();
+            });
+          },
+          child: Text(
+            'FlutBlog',
+            style: primaryText.copyWith(color: secondaryColor),
+          ),
         ),
         backgroundColor: primaryColor,
         actions: [
+          IconButton(
+            icon: Icon(Icons.folder, color: secondaryColor),
+            onPressed: () async {
+              setState(() {
+                _getAction = _postService.getMyPost(_userId);
+              });
+            },
+          ),
           IconButton(
             icon: Icon(Icons.add, color: secondaryColor),
             onPressed: () async {
@@ -67,7 +86,9 @@ class _HomeScreenState extends State<HomeScreen> {
               );
 
               if (result != null) {
-                setState(() {});
+                setState(() {
+                  _getAction = _postService.getPosts();
+                });
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Create Post Success')),
                 );
@@ -79,21 +100,21 @@ class _HomeScreenState extends State<HomeScreen> {
       body: LayoutBuilder(builder: (context, constraints) {
         if (constraints.maxWidth >= 1100) {
           return FutureBuilder(
-            future: _postService.getPosts(),
+            future: _getAction,
             builder: (BuildContext context,
                     AsyncSnapshot<List<PostModel>?> snapshot) =>
                 _checkData(snapshot, 3),
           );
         } else if (constraints.maxWidth >= 650) {
           return FutureBuilder(
-            future: _postService.getPosts(),
+            future: _getAction,
             builder: (BuildContext context,
                     AsyncSnapshot<List<PostModel>?> snapshot) =>
                 _checkData(snapshot, 2),
           );
         }
         return FutureBuilder(
-          future: _postService.getPosts(),
+          future: _getAction,
           builder: (BuildContext context,
                   AsyncSnapshot<List<PostModel>?> snapshot) =>
               _checkData(snapshot, 1),
@@ -203,7 +224,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   );
 
                                   if (result != null) {
-                                    setState(() {});
+                                    setState(() {
+                                      _getAction = _postService.getPosts();
+                                    });
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                           content: Text('Update Post Success')),
@@ -229,7 +252,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onPressed: () {
                                   showDialog(
                                       context: context,
-                                      builder: (context) {
+                                      builder: (BuildContext context) {
                                         return AlertDialog(
                                           title: Text(
                                             'Warning',
@@ -246,34 +269,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                           actions: <Widget>[
                                             ElevatedButton(
                                               onPressed: () {
-                                                Navigator.pop(context);
                                                 _postService
                                                     .deletePost(post.id)
                                                     .then((isSuccess) {
-                                                  setState(() {});
-
                                                   if (isSuccess) {
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(
-                                                      SnackBar(
-                                                        content: Text(
-                                                            'Delete Post Success'),
-                                                      ),
-                                                    );
-                                                  } else {
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(
-                                                      SnackBar(
-                                                        content: Text(
-                                                            'Delete Post Failed'),
-                                                      ),
-                                                    );
+                                                    setState(() {
+                                                      _getAction = _postService
+                                                          .getPosts();
+                                                    });
                                                   }
                                                 }).onError((error, stackTrace) {
                                                   print(error);
                                                 });
+                                                Navigator.of(context).pop();
                                               },
                                               child: Text(
                                                 "Yes",
@@ -295,7 +303,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                             OutlinedButton(
                                               onPressed: () {
-                                                Navigator.pop(context);
+                                                Navigator.of(context).pop();
                                               },
                                               child: Text(
                                                 "No",
