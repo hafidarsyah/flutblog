@@ -8,7 +8,7 @@ class PostService {
 
   // Get all posts
   Future<List<PostModel>?> getPosts() async {
-    var response = await client.get(Uri.parse(baseURL + '/api/posts'));
+    final response = await client.get(Uri.parse(baseURL + '/api/posts'));
 
     if (response.statusCode == 200) return postFromJson(response.body);
     return null;
@@ -16,7 +16,7 @@ class PostService {
 
   // Create post
   Future<bool> createPost(PostModel postModel) async {
-    var response = await client.post(
+    final response = await client.post(
       Uri.parse(baseURL + '/api/posts'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -30,7 +30,7 @@ class PostService {
 
   // Update post
   Future<bool> updatePost(PostModel postModel) async {
-    var response = await client.put(
+    final response = await client.put(
       Uri.parse(baseURL + '/api/posts/${postModel.id.toString()}'),
       headers: <String, String>{"Content-Type": "application/json"},
       body: postToJson(postModel),
@@ -42,7 +42,7 @@ class PostService {
 
   // Delete post
   Future<bool> deletePost(int? id) async {
-    var response = await client.delete(
+    final response = await client.delete(
       Uri.parse(baseURL + '/api/posts/${id.toString()}'),
       headers: <String, String>{"Content-Type": "application/json"},
     );
