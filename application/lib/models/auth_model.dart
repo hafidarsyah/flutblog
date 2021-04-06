@@ -1,9 +1,25 @@
 import 'dart:convert';
 
-List<AuthModel> authFromJson(String jsonData) {
-  final results = json.decode(jsonData);
-  return List<AuthModel>.from(
-      results.map((result) => AuthModel.fromJson(result)));
+UserToken userTokenFromJson(String str) => UserToken.fromJson(json.decode(str));
+
+class UserToken {
+  UserToken({
+    required this.user,
+    required this.token,
+  });
+
+  AuthModel user;
+  String token;
+
+  factory UserToken.fromJson(Map<String, dynamic> json) => UserToken(
+        user: AuthModel.fromJson(json["user"]),
+        token: json["token"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "user": user.toJson(),
+        "token": token,
+      };
 }
 
 String authToJson(AuthModel authModel) {

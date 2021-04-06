@@ -20,6 +20,7 @@ class PostService {
       Uri.parse(baseURL + '/api/posts'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        // 'Authorization': 'Bearer '
       },
       body: postToJson(postModel),
     );
