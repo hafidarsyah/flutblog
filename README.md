@@ -1,4 +1,4 @@
-<h1 align="center">Selamat datang di APILF!👋 </h1>
+<h1 align="center">Selamat datang di FlutBlog!👋 </h1>
     
 ![APILF - Demo GIF](demo.gif)
 
@@ -10,13 +10,9 @@
 
 </p>
 
-### 🤔 Apa itu APILF?
+### 🤔 Apa itu FlutBlog?
 
-APILF adalah aplikasi blog sederhana, yang dibuat oleh <a href="https://github.com/hafidardiansyah"> Hafid Ardiansyah</a>. Menggunakan teknologi Flutter dan Laravel.
-
-### 🎉 Kenapa membuat APILF?
-
-Karena untuk melatih saya membuat API di Laravel dan mengimplementasikan API di Flutter.
+Flutblog adalah project belajar teknologi Flutter dan Laravel dengan mengimplementasikan REST API, memiliki fitur CRUD dan Auth yang dibuat oleh <a href="https://github.com/hafidardiansyah"> Hafid Ardiansyah</a>
 
 ### 📝 Lisensi
 
