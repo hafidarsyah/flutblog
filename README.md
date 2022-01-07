@@ -10,9 +10,7 @@
 
 </p>
 
-### 🤔 Apa itu FlutBlog?
-
-Flutblog adalah project belajar teknologi Flutter dan Laravel dengan fitur CRUD dan Auth mengimplementasikan REST API yang dibuat oleh <a href="https://github.com/hafidardiansyah"> Hafid Ardiansyah</a>
+Flutblog adalah hasil project belajar menggunakan teknologi Flutter dan Laravel dengan fitur CRUD dan Auth yang dibuat oleh <a href="https://github.com/hafidardiansyah"> Hafid Ardiansyah</a>
 
 ### 📝 Lisensi
 
