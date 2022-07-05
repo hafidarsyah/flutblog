@@ -1,4 +1,4 @@
-<h1 align="center">Selamat datang di FlutBlog!👋 </h1>
+<h1 align="center">Welcome to FlutBlog!👋 </h1>
     
 ![APILF - Demo GIF](demo.gif)
 
@@ -10,9 +10,9 @@
 
 </p>
 
-Flutblog adalah hasil project belajar menggunakan teknologi Flutter dan Laravel dengan fitur CRUD dan Auth yang dibuat oleh <a href="https://github.com/hafidardiansyah"> Hafid Ardiansyah</a>
+<p>Simple blog applications like authenticate, create, read, update, delete. Create with Flutter for Frontend and Laravel for Backend with RESTful API, connect to database, routing and others.</p>
 
-### 📝 Lisensi
+### 📝 Licence
 
 - Copyright © 2021 Hafid Ardiansyah.
 - **Flutblog MIT License.**
